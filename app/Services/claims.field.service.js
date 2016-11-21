@@ -10,9 +10,12 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 var core_1 = require('@angular/core');
 var claim_type_model_1 = require('../Models/claim.type.model');
+var http_1 = require('@angular/http');
+require('rxjs/add/operator/toPromise');
 var claims_mock_json_1 = require('../Mock/claims.mock.json');
 var ClaimServices = (function () {
-    function ClaimServices() {
+    function ClaimServices(http) {
+        this.http = http;
         this.jsonData = claims_mock_json_1.ClaimsMock.Claims;
     }
     //getClaimDynamicData
@@ -159,15 +162,23 @@ var ClaimServices = (function () {
     };
     ClaimServices.prototype.storeClaim = function (claimToAdd) {
         //Write to DB
-        this.addedClaimArr.push(claimToAdd);
+        var claimsURL = 'app/claims';
+        var headers = new http_1.Headers({ 'Content-Type': 'application/json' });
+        console.log('***************Data to store coming is **************************');
+        console.log(claimToAdd);
+        return this.http.post(claimsURL, JSON.stringify({ claimType: claimToAdd.claimType, expense: claimToAdd.expense, date: claimToAdd.date }), { headers: headers })
+            .toPromise()
+            .then(function (res) { return res.json().data; });
     };
     ClaimServices.prototype.getClaims = function () {
         //get all the claims from DB
-        return this.addedClaimArr;
+        var claimsURL = 'app/claims';
+        return this.http.get(claimsURL)
+            .toPromise().then(function (response) { return response.json().data; });
     };
     ClaimServices = __decorate([
         core_1.Injectable(), 
-        __metadata('design:paramtypes', [])
+        __metadata('design:paramtypes', [http_1.Http])
     ], ClaimServices);
     return ClaimServices;
 }());

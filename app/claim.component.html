@@ -20,8 +20,8 @@
             <hra-template *ngIf="componentBooleanArr[4]"></hra-template>
             <mobile-template *ngIf="componentBooleanArr[5]"></mobile-template>
             <misc-template *ngIf="componentBooleanArr[6]"></misc-template>
+			<button style="float:right;" type="submit" class="btn btn-default" (click)="showClaim()">Show Claims</button>
 		</div>
-		<!--<button type="submit" class="btn btn-default">Add Claim</button>-->
 	</form>
 	<div class="row" *ngIf="isDisplayClaim">
 		<h4>Added Claims</h4>

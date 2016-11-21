@@ -1,4 +1,4 @@
-import { Component, OnInit, DoCheck } from '@angular/core';
+import { Component, OnInit} from '@angular/core';
 import { ClaimType, ExpenseHead, AddClaim } from './Models/claim.type.model';
 import {ClaimServices} from  './Services/claims.field.service';
 
@@ -8,7 +8,7 @@ import {ClaimServices} from  './Services/claims.field.service';
   templateUrl: 'claim.component.html'
 })
 
-export class ClaimComponent implements OnInit/*, DoCheck*/{
+export class ClaimComponent implements OnInit{
 
   componentBooleanArr:boolean[] = new Array<boolean>(7);
   expenseHeads : ExpenseHead[] = [];
@@ -29,13 +29,6 @@ export class ClaimComponent implements OnInit/*, DoCheck*/{
             console.log(this.expenseHeads);
           });
   }
-  // ngDoCheck() {
-  //   this.displayClaim = this.claimService.getClaims();
-  //   if(this.displayClaim.length != 0)
-  //     this.isDisplayClaim = true;
-  //   else
-  //     this.isDisplayClaim = false;
-  // }
   
   selectForm(id:any){
    console.log('***************************************************');
@@ -77,5 +70,17 @@ export class ClaimComponent implements OnInit/*, DoCheck*/{
    }
    console.log('Component Boolean***************************************************');
    console.log(this.componentBooleanArr);
+ }
+
+ showClaim(){
+   this.claimService.getClaims().then((claimArr)=>{
+            this.displayClaim = claimArr;
+            console.log(this.displayClaim);
+            if(this.displayClaim.length != 0)
+                this.isDisplayClaim = true;
+            else
+              this.isDisplayClaim = false;
+          });
+   
  }
 }

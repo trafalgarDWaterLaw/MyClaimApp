@@ -30,13 +30,6 @@ var ClaimComponent = (function () {
             console.log(_this.expenseHeads);
         });
     };
-    // ngDoCheck() {
-    //   this.displayClaim = this.claimService.getClaims();
-    //   if(this.displayClaim.length != 0)
-    //     this.isDisplayClaim = true;
-    //   else
-    //     this.isDisplayClaim = false;
-    // }
     ClaimComponent.prototype.selectForm = function (id) {
         console.log('***************************************************');
         console.log('selected drop down ID is' + id);
@@ -76,6 +69,17 @@ var ClaimComponent = (function () {
         }
         console.log('Component Boolean***************************************************');
         console.log(this.componentBooleanArr);
+    };
+    ClaimComponent.prototype.showClaim = function () {
+        var _this = this;
+        this.claimService.getClaims().then(function (claimArr) {
+            _this.displayClaim = claimArr;
+            console.log(_this.displayClaim);
+            if (_this.displayClaim.length != 0)
+                _this.isDisplayClaim = true;
+            else
+                _this.isDisplayClaim = false;
+        });
     };
     ClaimComponent = __decorate([
         core_1.Component({

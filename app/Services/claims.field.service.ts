@@ -1,6 +1,7 @@
 import {Injectable} from '@angular/core';
 import {ClaimType, DropDown, ExpenseHead, LabelClass, ClassOption, AddClaim} from '../Models/claim.type.model';
-
+import { Headers, Http } from '@angular/http';
+import 'rxjs/add/operator/toPromise';
 import {ClaimsMock} from '../Mock/claims.mock.json';
 
 @Injectable() export class ClaimServices{
@@ -11,7 +12,7 @@ import {ClaimsMock} from '../Mock/claims.mock.json';
     private jsonData:any;
     private claimTypeDetailJsonData:any;
     private claimFieldOptionDetailJsonData:any;
-    constructor(){
+    constructor(private http: Http){
         this.jsonData = ClaimsMock.Claims;
     }
     //getClaimDynamicData
@@ -161,12 +162,21 @@ import {ClaimsMock} from '../Mock/claims.mock.json';
         return strtoday;
   }
 
-  storeClaim(claimToAdd:AddClaim){
+  storeClaim(claimToAdd:AddClaim):Promise<AddClaim[]>{
       //Write to DB
-      this.addedClaimArr.push(claimToAdd);
+      let claimsURL = 'app/claims';
+     let headers = new Headers({'Content-Type': 'application/json'});
+     console.log('***************Data to store coming is **************************');
+     console.log(claimToAdd);
+     return this.http.post(claimsURL, JSON.stringify({claimType: claimToAdd.claimType, expense: claimToAdd.expense, date: claimToAdd.date}), {headers: headers})
+            .toPromise()
+            .then(res => res.json().data);  
   }
-  getClaims():AddClaim[]{
+  getClaims():Promise<AddClaim[]>{
       //get all the claims from DB
-      return this.addedClaimArr;
+      let claimsURL = 'app/claims';
+      return this.http.get(claimsURL)
+               .toPromise().then(response =>response.json().data as AddClaim[]);
   }
+ 
 }
